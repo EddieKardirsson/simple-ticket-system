@@ -22,3 +22,9 @@ export const createTicket = (): CreateTicketResponse => {
 
   return toResponse(result);
 };
+
+export const getAllTickets = (): CreateTicketResponse[] => {
+  const rows = db.query<Ticket, []>("SELECT * FROM tickets ORDER BY created_at DESC").all();
+
+  return rows.map(toResponse);
+};
