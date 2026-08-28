@@ -1,9 +1,13 @@
 import express from "express";
+import ticketRoutes from "./routes/ticket.routes";
 
 const app = express();
 
 app.use(express.json());
 
+app.use("/api/tickets", ticketRoutes);
+
+// Dummy route to confirm the server is running (Remove this route in production)
 app.get("/", (_req: express.Request, res: express.Response) => {
   res.send("API running");
 });
