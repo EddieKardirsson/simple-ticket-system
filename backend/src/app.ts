@@ -1,11 +1,15 @@
 import express from "express";
 import ticketRoutes from "./routes/ticket.routes";
+import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
 
 app.use(express.json());
 
 app.use("/api/tickets", ticketRoutes);
+
+app.use(errorHandler);
+
 
 // Dummy route to confirm the server is running (Remove this route in production)
 app.get("/", (_req: express.Request, res: express.Response) => {

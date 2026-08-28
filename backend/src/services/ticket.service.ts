@@ -28,3 +28,25 @@ export const getAllTickets = (): CreateTicketResponse[] => {
 
   return rows.map(toResponse);
 };
+
+export const redeemTicket = (id: number): CreateTicketResponse => {
+  const existing = db
+    .query<Ticket, [number]>("SELECT * FROM tickets WHERE id = ?")
+    .get(id);
+
+  if (!existing) throw { status: 404, message: "Ticket not found" };
+  if (existing.is_used === 1) throw { status: 409, message: "Ticket already used" };
+
+  const result = db
+    .query<Ticket, [number]>(
+      `UPDATE tickets
+       SET is_used = 1, used_at = datetime('now'), updated_at = datetime('now')
+       WHERE id = ?
+       RETURNING *`
+    )
+    .get(id);
+
+  if (!result) throw new Error("Failed to redeem ticket");
+
+  return toResponse(result);
+};
