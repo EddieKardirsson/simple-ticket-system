@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { createTicket, getAllTickets, redeemTicket } from '../services/ticket.service.ts';
+import { createTicket, getAllTickets, redeemTicket, deleteTicket } from '../services/ticket.service.ts';
 
 export const handleCreateTicket = (_req: Request, res: Response, next: NextFunction): void => {
   try {
@@ -24,6 +24,16 @@ export const handleRedeemTicket = (req: Request, res: Response, next: NextFuncti
     const id = Number(req.params.id);
     const ticket = redeemTicket(id);
     res.status(200).json(ticket);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const handleDeleteTicket = (req: Request, res: Response, next: NextFunction): void => {
+  try {
+    const id = Number(req.params.id);
+    deleteTicket(id);
+    res.status(204).send();
   } catch (error) {
     next(error);
   }

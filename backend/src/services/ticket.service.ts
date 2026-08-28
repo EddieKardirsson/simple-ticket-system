@@ -50,3 +50,14 @@ export const redeemTicket = (id: number): CreateTicketResponse => {
 
   return toResponse(result);
 };
+
+export const deleteTicket = (id: number): void => {
+  const existing = db
+    .query<Ticket, [number]>("SELECT * FROM tickets WHERE id = ?")
+    .get(id);
+
+  if (!existing) throw { status: 404, message: "Ticket not found" };
+  if (existing.is_used === 1) throw { status: 409, message: "Cannot delete a used ticket" };
+
+  db.query<null, [number]>("DELETE FROM tickets WHERE id = ?").run(id);
+};
