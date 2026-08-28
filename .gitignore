@@ -63,4 +63,4 @@ __screenshots__/
 *.local
 
 # SQLite database
-backend/data/*.db
+backend/src/data/*.db*

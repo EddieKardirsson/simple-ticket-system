@@ -1,4 +1,5 @@
 import app from "./app";
+import "./config/migrate.ts";
 
 const port = Number(process.env.PORT ?? 3000);
 
