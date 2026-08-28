@@ -41,3 +41,33 @@ describe("GET /api/tickets", () => {
     expect(ticket.code).toMatch(/^[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}$/);
   });
 });
+
+describe("PATCH /api/tickets/:id/redeem", () => {
+  it("should redeem an unused ticket and return 200", async () => {
+    const created = await request(app).post("/api/tickets");
+    const id = created.body.id;
+
+    const res = await request(app).patch(`/api/tickets/${id}/redeem`);
+
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("is_used", true);
+    expect(res.body).toHaveProperty("used_at");
+    expect(res.body.used_at).not.toBeNull();
+  });
+
+  it("should return 409 when redeeming an already used ticket", async () => {
+    const created = await request(app).post("/api/tickets");
+    const id = created.body.id;
+
+    await request(app).patch(`/api/tickets/${id}/redeem`);
+    const res = await request(app).patch(`/api/tickets/${id}/redeem`);
+
+    expect(res.status).toBe(409);
+  });
+
+  it("should return 404 when ticket does not exist", async () => {
+    const res = await request(app).patch("/api/tickets/999999/redeem");
+
+    expect(res.status).toBe(404);
+  });
+});
