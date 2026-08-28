@@ -9,6 +9,7 @@
     "start": "bun src/server.ts"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
     "@types/bun": "latest",
     "@types/express": "^5.0.6"
   },
@@ -16,6 +17,7 @@
     "typescript": "^7"
   },
   "dependencies": {
+    "better-sqlite3": "^13.0.3",
     "express": "^5.2.1"
   }
 }
