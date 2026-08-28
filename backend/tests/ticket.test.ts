@@ -15,3 +15,29 @@ describe("POST /api/tickets", () => {
     expect(res.body.code).toMatch(/^[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}$/);
   });
 });
+
+describe("GET /api/tickets", () => {
+  it("should return 200 and an array of tickets", async () => {
+    const res = await request(app).get("/api/tickets");
+
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+  });
+
+  it("should return tickets with the correct shape", async () => {
+    // First create a ticket so the list is guaranteed to be non-empty
+    await request(app).post("/api/tickets");
+
+    const res = await request(app).get("/api/tickets");
+    const ticket = res.body[0];
+
+    expect(ticket).toHaveProperty("id");
+    expect(ticket).toHaveProperty("code");
+    expect(ticket).toHaveProperty("is_used");
+    expect(ticket).toHaveProperty("used_at");
+    expect(ticket).toHaveProperty("created_at");
+    expect(ticket).toHaveProperty("updated_at");
+    expect(typeof ticket.is_used).toBe("boolean");
+    expect(ticket.code).toMatch(/^[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}$/);
+  });
+});
