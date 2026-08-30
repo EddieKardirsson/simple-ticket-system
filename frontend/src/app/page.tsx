@@ -1,7 +1,9 @@
 export default function Home() {
   return (
-    <main>
-      <h1>Simple Ticket System</h1>
-    </main>
+    <>
+      <h1 className="text-2xl font-bold text-center tracking-wide uppercase">
+        Simple Ticket System
+      </h1>
+    </>
   );
 }
