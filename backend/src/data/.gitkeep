@@ -1,0 +1,5 @@
+# SQLite database
+backend/src/data/*.db*
+
+# Keep the data directory tracked
+!backend/src/data/.gitkeep
